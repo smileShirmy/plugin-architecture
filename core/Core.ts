@@ -65,6 +65,7 @@ export class CoreConstructor<O = {}> extends EventEmitter {
   }
 
   private applyPlugins() {
+    const options = this.options
     // 根据插件设置顺序进行排序
     CoreConstructor.plugins
       .sort((a, b) => {
@@ -79,7 +80,7 @@ export class CoreConstructor<O = {}> extends EventEmitter {
       .forEach((item: PluginItem) => {
         const ctor = item.ctor
         // 当启⽤指定插件的时候且插件构造函数的类型是函数的话，再创建对应的插件
-        if (typeof ctor === 'function') {
+        if (options[item.name] && typeof ctor === 'function') {
           // 把插件实例保存到 plugins 属性
           this.plugins[item.name] = new ctor(this)
         }
